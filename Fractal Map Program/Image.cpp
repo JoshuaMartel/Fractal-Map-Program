@@ -10,9 +10,7 @@ Image::Image(std::string filename, SDL_Surface* windowSurface) {
 	SDL_BlitSurface(m_pSDLSurface, nullptr, windowSurface, nullptr);
 }
 
-Image::~Image() {
-	SDL_FreeSurface(m_pSDLSurface);
-}
+Image::~Image() {}
 
 SDL_Surface* Image::getSurface() {
 	return m_pSDLSurface;

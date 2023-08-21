@@ -15,11 +15,12 @@ using namespace std;
 namespace fractalprogram {
 	class FractalCreator {
 	private:
+		static const int MAX_ITERATIONS = Mandelbrot::MAX_ITERATIONS;
 		int m_total{ 0 };
 		int m_width{ 0 };
 		int m_height{ 0 };
 		ZoomList m_zoomList;
-		unique_ptr<int[]> m_histogram;
+		unique_ptr<int[]> m_histogram{nullptr};
 		unique_ptr<int[]> m_fractal{nullptr};
 		Bitmap m_bitmap;
 		string m_bitmapName{"Mandelbrot.bmp"};
@@ -36,6 +37,7 @@ namespace fractalprogram {
 		void drawFractal();
 		void writeBitmap(string name);
 		int getRange(int iterations) const;
+		int findGreatest();
 
 	public:
 		FractalCreator(int width, int height);

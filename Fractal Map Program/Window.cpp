@@ -42,7 +42,7 @@ void Window::moveRelative(int x, int y) {
 }
 
 void Window::updateSurface(SDL_Surface surface) {
-	SDL_FreeSurface(m_pSDLWindowSurface);
+	//SDL_FreeSurface(m_pSDLWindowSurface);
 	m_pSDLWindowSurface = &surface;
 }
 

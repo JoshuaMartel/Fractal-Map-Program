@@ -47,7 +47,7 @@ bool UI::handleMouse(const SDL_Event* event) {
 			else {
 
 				m_fractalCreator->run(m_imageName1);
-				mp_displayImage = Image{ m_imageName2, SDL_GetWindowSurface(mp_window->getWindow()) };
+				mp_displayImage = Image{ m_imageName1, SDL_GetWindowSurface(mp_window->getWindow()) };
 				mp_window->updateSurface(*mp_displayImage.getSurface());
 				mp_window->renderFrame();
 				m_currentImage = 0;
@@ -73,4 +73,5 @@ bool UI::handleEvent(const SDL_Event* event) {
 	if (handleMouse(event)) {
 		return true;
 	}
+	return false;
 }
