@@ -165,6 +165,8 @@
     <ClInclude Include="Bitmap.h" />
     <ClInclude Include="BitmapFileHeader.h" />
     <ClInclude Include="BitmapInfoHeader.h" />
+    <ClInclude Include="threadKeeper.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Pixel.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="FractalCreator.h" />

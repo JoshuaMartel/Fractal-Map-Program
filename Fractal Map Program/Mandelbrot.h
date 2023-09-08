@@ -11,7 +11,6 @@ public:
 
 public:
 	static int getInterations(double x, double y);
-	static int* getPallet(int totalColours);
 };
 
 }

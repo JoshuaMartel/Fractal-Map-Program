@@ -19,6 +19,12 @@
     <Filter Include="Source Files\UI">
       <UniqueIdentifier>{bc1646bb-7339-4b7c-aeb5-2a4e7ded4384}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\chrono">
+      <UniqueIdentifier>{f892be6a-8f27-4192-92bd-7897f6226f92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\threads">
+      <UniqueIdentifier>{7345e448-7396-4628-b740-2bef37b91676}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Fractal Map Program.cpp">
@@ -85,6 +91,12 @@
     </ClInclude>
     <ClInclude Include="Pixel.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files\chrono</Filter>
+    </ClInclude>
+    <ClInclude Include="threadKeeper.h">
+      <Filter>Header Files\threads</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

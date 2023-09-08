@@ -5,9 +5,12 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <chrono>
+#include <thread>
 
 #include "FractalCreator.h"
 #include "Pixel.h"
+#include "Timer.h"
 
 using std::cout;
 
@@ -54,12 +57,16 @@ namespace fractalprogram {
 	}
 
 	void FractalCreator::run(string name) {
+		unsigned long const hardware_threads = std::thread::hardware_concurrency();
+		cout << "hardware threads available: " << hardware_threads << endl;
 		cout << "Running FractalCreator..." << endl;
-		calaculateIterations();
-		calculateTotalIterations();
+		timer::function_timer([this]() {calaculateIterations();},"Timing calaculateIterations...");
+		timer::function_timer([this]() {calculateTotalIterations();}, "Timing calculateTotalIterations...");
+		timer::function_timer([this]() {drawFractal(); }, "Timing drawFractal...");
+		timer::function_timer([this, name]() {writeBitmap(name); }, "Timing writeBitmap...");
+		
 		//caluclateRangeTotals();
-		drawFractal();
-		writeBitmap(name);
+
 		cout << "FractalCreator finished." << endl;
 	}
 
@@ -83,8 +90,6 @@ namespace fractalprogram {
 				}
 			}
 		}
-
-		
 	}
 
 	void FractalCreator::caluclateRangeTotals() {
@@ -101,10 +106,10 @@ namespace fractalprogram {
 			m_rangeTotals[rangeIndex] += pixels;
 		}
 
-		for (int value : m_rangeTotals) {
+		/*for (int value : m_rangeTotals) {
 			cout << "Range total: " << value << endl;
 		}
-		cout << "Range size: " << m_rangeTotals.size() << endl;
+		cout << "Range size: " << m_rangeTotals.size() << endl;*/
 	}
 
 	int FractalCreator::findGreatest() {
@@ -125,12 +130,12 @@ namespace fractalprogram {
 	void FractalCreator::calculateTotalIterations() {
 		for (int i = 0; i < MAX_ITERATIONS; i++) {
 			m_total += m_histogram[i];
-			cout << m_histogram[i] << " ";
+			//cout << m_histogram[i] << " ";
 		}
 
 		//cout << endl;
 
-		cout << "total: " << m_total << endl;
+		//cout << "total: " << m_total << endl;
 	}
 
 	void FractalCreator::drawFractal() {
@@ -144,8 +149,8 @@ namespace fractalprogram {
 
 		const int AREA = m_width * m_height;
 		
-		const int MAX_INTENSITY = 100;
-		// in this case out of 100
+		const int MAX_INTENSITY = 100; // in this case out of 100
+		
 		const int INTENSITY_THRESHOLD = MAX_INTENSITY - 25;
 		vector<Pixel> pixels(AREA, Pixel());
 		int maxHueIntensity = 0;
@@ -171,52 +176,27 @@ namespace fractalprogram {
 
 				if (iterations != MAX_ITERATIONS) {
 
-					//int pixels = 0;
-
-					/*for (int i = rangeStart; i <= iterations; i++) {
-						pixels += m_histogram[i];
-					}*/
-					//double hue = 0.0;
-
-					
 					for (int i = 0; i < iterations; i++) {
 						pixels[y * m_width + x].hue += (double)m_histogram[i] / m_total;
 						if ((int)(pixels[y * m_width + x].hue * 100) > maxHueIntensity) {
 							maxHueIntensity = (int)(pixels[y * m_width + x].hue * 100);
 						}
-							
 					}
 					
-					//cout << hue << " ";
-					//green = pow(255, hue);
-					
-					/*red = 0;
-					green = pow(255, pixels[y * m_width + x].hue);
-					blue = 0;*/
-
 					/*red = startColour.r + colourDiff.r * 
 						(double)pixels / rangeTotal;
 					green = startColour.g + colourDiff.g * 
 						(double)pixels / rangeTotal;
 					blue = startColour.b + colourDiff.b * 
 						(double)pixels / rangeTotal;*/
-					//myfile << pixels[y * m_width + x].hue << " at iteration: " << iterations << endl;
 				}
-				/*if (iterations % 1000 == 0) {
-					cout << " Range: " << range
-						<< "; iterations: " << iterations
-						<< "; red: " << (int)red
-						<< ", green: " << (int)green
-						<< ", blue: " << (int)blue;
-				}*/
-				
-				//m_bitmap.setPixel(x, y, red, green, blue);
 			}
 		}
 
+		// Increase the brightness of each pixel if the max pixel hue is less than threshold
 		if (maxHueIntensity < INTENSITY_THRESHOLD) {
 			double diff = (double)(MAX_INTENSITY - maxHueIntensity) / MAX_INTENSITY;
-			cout << "diff = " << diff << endl;
+			//cout << "diff = " << diff << endl;
 			std::transform(pixels.begin(), pixels.end(), pixels.begin(),
 				[diff](Pixel p) {return Pixel(p.x, p.y, p.hue + diff); });
 		}
@@ -236,8 +216,8 @@ namespace fractalprogram {
 			m_bitmap.setPixel(iter->x, iter->y, red, green, blue);
 		}
 		myfile.close();
-		cout << endl;
-		cout << "max hue: " << maxHueIntensity << endl;
+		//cout << endl;
+		//cout << "max hue: " << maxHueIntensity << endl;
 	}
 
 	int FractalCreator::getRange(int iterations) const {

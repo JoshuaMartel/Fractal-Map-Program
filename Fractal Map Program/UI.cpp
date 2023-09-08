@@ -34,7 +34,7 @@ bool UI::handleMouse(const SDL_Event* event) {
 			cout << "Swapping image..." << endl;
 
 			m_fractalCreator->addZoom(Zoom(x, y, 0.1));
-			// current image is image1, so rewrite image 2 and siplay it
+			// current image is image1, so rewrite image 2 and diplay it
 			if (m_currentImage == 0) {
 
 				m_fractalCreator->run(m_imageName2);
